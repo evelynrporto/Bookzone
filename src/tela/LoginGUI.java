@@ -7,22 +7,28 @@ package tela;
 
 import dao.FuncionarioDAO;
 import entidade.Funcionario;
+import java.awt.Toolkit;
 
 /**
  *
  * @author evely
  */
-public class LoguinGUI extends javax.swing.JFrame {
+public class LoginGUI extends javax.swing.JFrame {
 
     /**
      * Creates new form LoguinGUI
      */
-    public LoguinGUI() {
+    public LoginGUI() {
         initComponents();
         lblerro.setVisible(false);
         tfdusername.setText("Nome de usuário");
         tfdsenha.setEchoChar((char)0);
         tfdsenha.setText("Senha");
+        setIcon();
+    }
+    
+    public void setIcon(){
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));   
     }
 
     /**
@@ -176,20 +182,21 @@ public class LoguinGUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LoguinGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LoguinGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LoguinGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LoguinGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LoguinGUI().setVisible(true);
+                new LoginGUI().setVisible(true);
             }
         });
     }

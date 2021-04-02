@@ -5,8 +5,10 @@
  */
 package tela;
 
-import dao.CategoriaDAO;
-import entidade.Categoria;
+import apoio.ComboItem;
+import apoio.CombosDAO;
+import dao.LivroDAO;
+import entidade.Livro;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,32 +17,40 @@ import javax.swing.JOptionPane;
  */
 public class DlgCadastro extends javax.swing.JDialog {
         int id = 0;
-        Categoria categoria = new Categoria();
+        Livro livro = new Livro();
  
         //Categoria categ = new Categoria();
         
     public DlgCadastro(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        pnllivros.setVisible(false);
+        new CombosDAO().popularCombo("categoria", cmbcategoria);
+        new CombosDAO().popularCombo("estante", cmbestante);
+        new CombosDAO().popularCombo("editora", cmbeditora);
+        new CombosDAO().popularCombo("autor", cmbautor);
+        pnlcategoria.setVisible(false);
         pnlclientes.setVisible(false);
         pnlautor.setVisible(false);
     }
     
-    public DlgCadastro(java.awt.Frame parent, boolean modal, Categoria categoria) {
+    public DlgCadastro(java.awt.Frame parent, boolean modal, Livro livro) {
         super(parent, modal);
         initComponents();
-        pnllivros.setVisible(false);
+        new CombosDAO().popularCombo("categoria", cmbcategoria);
+        new CombosDAO().popularCombo("estante", cmbestante);
+        new CombosDAO().popularCombo("editora", cmbeditora);
+        new CombosDAO().popularCombo("autor", cmbautor);
+        pnlcategoria.setVisible(false);
         pnlclientes.setVisible(false);
         pnlautor.setVisible(false);
-        tfddescricao.setText(categoria.getDescricao());
+        tfdtitulo.setText(livro.getTitulo());
         
-        if (categoria.getSituacao() == 'a') {
+        if (livro.getSituacao() == 'a') {
             cmbSituacaocat.setSelectedIndex(0);
         } else {
             cmbSituacaocat.setSelectedIndex(1);
         }
-        this.categoria = categoria;
+        this.livro = livro;
     }
     
 
@@ -55,12 +65,17 @@ public class DlgCadastro extends javax.swing.JDialog {
 
         pnllivros = new javax.swing.JPanel();
         lblregistrar = new javax.swing.JLabel();
+        tfdvenda = new javax.swing.JTextField();
+        tfdqtd = new javax.swing.JTextField();
+        tfdcusto = new javax.swing.JTextField();
+        cmbsituacao = new javax.swing.JComboBox<>();
+        cmbeditora = new javax.swing.JComboBox<>();
         cmbestante = new javax.swing.JComboBox<>();
         cmbidioma = new javax.swing.JComboBox<>();
         cmbcategoria = new javax.swing.JComboBox<>();
         cmbautor = new javax.swing.JComboBox<>();
         tfdtitulo = new javax.swing.JTextField();
-        lblfundoLivros = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         pnlclientes = new javax.swing.JPanel();
         pnlcategoria = new javax.swing.JPanel();
         btncadastrarcat = new javax.swing.JButton();
@@ -74,21 +89,42 @@ public class DlgCadastro extends javax.swing.JDialog {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         pnllivros.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        pnllivros.add(lblregistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 515, 200, 50));
+
+        lblregistrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblregistrarMouseClicked(evt);
+            }
+        });
+        pnllivros.add(lblregistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 580, 210, 60));
+
+        tfdvenda.setToolTipText("");
+        tfdvenda.setBorder(null);
+        pnllivros.add(tfdvenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 306, 120, 30));
+        pnllivros.add(tfdqtd, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 533, 40, 30));
+
+        tfdcusto.setToolTipText("");
+        tfdcusto.setBorder(null);
+        pnllivros.add(tfdcusto, new org.netbeans.lib.awtextra.AbsoluteConstraints(127, 306, 120, 30));
+
+        cmbsituacao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ativo", "Inativo", " " }));
+        pnllivros.add(cmbsituacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 469, 130, 30));
+
+        cmbeditora.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        pnllivros.add(cmbeditora, new org.netbeans.lib.awtextra.AbsoluteConstraints(127, 470, 120, 30));
 
         cmbestante.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        pnllivros.add(cmbestante, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 430, 130, 20));
+        pnllivros.add(cmbestante, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 390, 130, 30));
 
-        cmbidioma.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        pnllivros.add(cmbidioma, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 430, 120, 20));
+        cmbidioma.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Português", "Inglês" }));
+        pnllivros.add(cmbidioma, new org.netbeans.lib.awtextra.AbsoluteConstraints(127, 388, 120, 30));
 
         cmbcategoria.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         cmbcategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        pnllivros.add(cmbcategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 250, 130, 20));
+        pnllivros.add(cmbcategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 230, 130, 30));
 
         cmbautor.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         cmbautor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        pnllivros.add(cmbautor, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 250, 130, 20));
+        pnllivros.add(cmbautor, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 230, 130, 30));
 
         tfdtitulo.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         tfdtitulo.setBorder(null);
@@ -97,13 +133,13 @@ public class DlgCadastro extends javax.swing.JDialog {
                 tfdtituloActionPerformed(evt);
             }
         });
-        pnllivros.add(tfdtitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 157, 320, 30));
+        pnllivros.add(tfdtitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 150, 320, 40));
         tfdtitulo.getAccessibleContext().setAccessibleName("");
 
-        lblfundoLivros.setIcon(new javax.swing.ImageIcon(getClass().getResource("/livraria/imagens/cadastro livros.png"))); // NOI18N
-        pnllivros.add(lblfundoLivros, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/livraria/imagens/book register.png"))); // NOI18N
+        pnllivros.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        getContentPane().add(pnllivros, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 530, 620));
+        getContentPane().add(pnllivros, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 520, 700));
 
         javax.swing.GroupLayout pnlclientesLayout = new javax.swing.GroupLayout(pnlclientes);
         pnlclientes.setLayout(pnlclientesLayout);
@@ -124,11 +160,6 @@ public class DlgCadastro extends javax.swing.JDialog {
         btncadastrarcat.setFont(new java.awt.Font("Verdana", 0, 27)); // NOI18N
         btncadastrarcat.setForeground(new java.awt.Color(255, 255, 255));
         btncadastrarcat.setText("Registrar");
-        btncadastrarcat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btncadastrarcatActionPerformed(evt);
-            }
-        });
         pnlcategoria.add(btncadastrarcat, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 480, 360, 60));
 
         cmbSituacaocat.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -160,25 +191,47 @@ public class DlgCadastro extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btncadastrarcatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncadastrarcatActionPerformed
+    private void tfdtituloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfdtituloActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfdtituloActionPerformed
 
-        CategoriaDAO categDAO = new CategoriaDAO();        
-        id = categoria.getId();
-        categoria.setDescricao(tfddescricao.getText());
-
-        int indice = cmbSituacaocat.getSelectedIndex();
-        if (indice == 0) {
-            categoria.setSituacao('a');
+    private void lblregistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblregistrarMouseClicked
+       LivroDAO livDAO = new LivroDAO();
+        id = livro.getId();
+        livro.setTitulo(tfdtitulo.getText());
+        livro.setQuantidade(Integer.parseInt(tfdqtd.getText()));
+        livro.setValor_custo(Double.parseDouble(tfdcusto.getText()));
+        livro.setValor_venda(Double.parseDouble(tfdvenda.getText()));
+        
+        ComboItem ci = (ComboItem) cmbcategoria.getSelectedItem();
+        livro.setCategoria_id(ci.getCodigo());
+        ComboItem ci2 = (ComboItem) cmbautor.getSelectedItem();
+        livro.setAutor_id(ci2.getCodigo());
+        ComboItem ci3 = (ComboItem) cmbeditora.getSelectedItem();
+        livro.setEditora_id(ci3.getCodigo());
+        ComboItem ci4 = (ComboItem) cmbestante.getSelectedItem();
+        livro.setEstante_id(ci4.getCodigo());
+        
+        int idcidioma = cmbidioma.getSelectedIndex();      
+        if (idcidioma == 0){
+            livro.setIdioma("Português");
         } else {
-            categoria.setSituacao('i');
+           livro.setIdioma("Inglês");
+        }
+        
+        int idcsit = cmbsituacao.getSelectedIndex();
+        if (idcsit == 0) {
+            livro.setSituacao('a');
+        } else {
+            livro.setSituacao('i');
         }
 
         String retorno = null;
-        
+
         if (id == 0) {
-            retorno = categDAO.salvar(categoria);
+            retorno = livDAO.salvar(livro);
         } else {
-            retorno = categDAO.atualizar(categoria);
+            retorno = livDAO.atualizar(livro);
         }
 
         if (retorno == null) {
@@ -191,16 +244,10 @@ public class DlgCadastro extends javax.swing.JDialog {
 
         } else {
             JOptionPane.showMessageDialog(null, "Problemas ao salvar registro!\n\n"
-                    + "Mensagem técnica:\n"
-                    + "Erro: " + retorno);
+                + "Mensagem técnica:\n"
+                + "Erro: " + retorno);
         }
-    
-        
-    }//GEN-LAST:event_btncadastrarcatActionPerformed
-
-    private void tfdtituloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfdtituloActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfdtituloActionPerformed
+    }//GEN-LAST:event_lblregistrarMouseClicked
 
     /**
      * @param args the command line arguments
@@ -250,16 +297,21 @@ public class DlgCadastro extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> cmbSituacaocat;
     private javax.swing.JComboBox<String> cmbautor;
     private javax.swing.JComboBox<String> cmbcategoria;
+    private javax.swing.JComboBox<String> cmbeditora;
     private javax.swing.JComboBox<String> cmbestante;
     private javax.swing.JComboBox<String> cmbidioma;
+    private javax.swing.JComboBox<String> cmbsituacao;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel lblfundo;
-    private javax.swing.JLabel lblfundoLivros;
     private javax.swing.JLabel lblregistrar;
     private javax.swing.JPanel pnlautor;
     private javax.swing.JPanel pnlcategoria;
     private javax.swing.JPanel pnlclientes;
     private javax.swing.JPanel pnllivros;
+    private javax.swing.JTextField tfdcusto;
     private javax.swing.JTextField tfddescricao;
+    private javax.swing.JTextField tfdqtd;
     private javax.swing.JTextField tfdtitulo;
+    private javax.swing.JTextField tfdvenda;
     // End of variables declaration//GEN-END:variables
 }

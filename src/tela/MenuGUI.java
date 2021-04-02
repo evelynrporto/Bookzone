@@ -5,9 +5,9 @@
  */
 package tela;
 
-import dao.CategoriaDAO;
-import entidade.Categoria;
+import dao.LivroDAO;
 import entidade.Funcionario;
+import entidade.Livro;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -25,19 +25,19 @@ public class MenuGUI extends javax.swing.JFrame {
         
         setIcon();
         configurarBotoes();
-        configurarTblCategoria();
+        configurarTblLivros();
         // configs dos paineis
         pnlhome.setVisible(true);
         pnlcadastro.setVisible(false);
         lblfuncionario.setText(funcionario.getNome());
-        new CategoriaDAO().popularTabela(tblcategoria,"");
+        new LivroDAO().popularTabela(tbllivros,"");
                       
     }
     
-    public void configurarTblCategoria(){
-        tblcategoria.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 15));
-        tblcategoria.getTableHeader().setOpaque(false);
-        tblcategoria.getTableHeader().setBackground(new Color (31,118,138));
+    public void configurarTblLivros(){
+        tbllivros.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 15));
+        tbllivros.getTableHeader().setOpaque(false);
+        tbllivros.getTableHeader().setBackground(new Color (31,118,138));
     }
     
     public void configurarBotoes() {
@@ -46,6 +46,7 @@ public class MenuGUI extends javax.swing.JFrame {
         btncadastro.setFocusPainted(false);
         btnprodutos.setFocusPainted(false);
         btnvendas.setFocusPainted(false);      
+        btnupdate.setFocusPainted(false);
         btncadastro.setBackground(new Color(26,30,31));
         btnvendas.setBackground(new Color(26,30,31));
         btnprodutos.setBackground(new Color(26,30,31));
@@ -79,13 +80,10 @@ public class MenuGUI extends javax.swing.JFrame {
         pnlhome = new javax.swing.JPanel();
         pnlcadastro = new javax.swing.JPanel();
         jtblcadastro = new javax.swing.JTabbedPane();
-        pnllivro = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tbllivros = new javax.swing.JTable();
         pnlCliente = new javax.swing.JPanel();
-        pnlcategoria = new javax.swing.JPanel();
+        pnllivros = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblcategoria = new javax.swing.JTable();
+        tbllivros = new javax.swing.JTable();
         tfdbusca = new javax.swing.JTextField();
         btnpesquisa = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
@@ -234,7 +232,20 @@ public class MenuGUI extends javax.swing.JFrame {
         jtblcadastro.setBackground(new java.awt.Color(204, 204, 204));
         jtblcadastro.setFont(new java.awt.Font("Times New Roman", 0, 17)); // NOI18N
 
-        pnllivro.setBackground(new java.awt.Color(255, 255, 255));
+        javax.swing.GroupLayout pnlClienteLayout = new javax.swing.GroupLayout(pnlCliente);
+        pnlCliente.setLayout(pnlClienteLayout);
+        pnlClienteLayout.setHorizontalGroup(
+            pnlClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1245, Short.MAX_VALUE)
+        );
+        pnlClienteLayout.setVerticalGroup(
+            pnlClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 655, Short.MAX_VALUE)
+        );
+
+        jtblcadastro.addTab("Cliente", pnlCliente);
+
+        pnllivros.setBackground(new java.awt.Color(255, 255, 255));
 
         tbllivros.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         tbllivros.setModel(new javax.swing.table.DefaultTableModel(
@@ -250,74 +261,16 @@ public class MenuGUI extends javax.swing.JFrame {
             }
         ));
         tbllivros.setGridColor(new java.awt.Color(204, 204, 204));
-        tbllivros.setIntercellSpacing(new java.awt.Dimension(0, 0));
         tbllivros.setRowHeight(35);
         tbllivros.setSelectionBackground(new java.awt.Color(204, 204, 204));
-        tbllivros.setShowHorizontalLines(false);
         tbllivros.setShowVerticalLines(false);
         tbllivros.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(tbllivros);
-
-        javax.swing.GroupLayout pnllivroLayout = new javax.swing.GroupLayout(pnllivro);
-        pnllivro.setLayout(pnllivroLayout);
-        pnllivroLayout.setHorizontalGroup(
-            pnllivroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnllivroLayout.createSequentialGroup()
-                .addGap(85, 85, 85)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1057, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(103, Short.MAX_VALUE))
-        );
-        pnllivroLayout.setVerticalGroup(
-            pnllivroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnllivroLayout.createSequentialGroup()
-                .addContainerGap(199, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(109, 109, 109))
-        );
-
-        jtblcadastro.addTab("Livro", pnllivro);
-
-        javax.swing.GroupLayout pnlClienteLayout = new javax.swing.GroupLayout(pnlCliente);
-        pnlCliente.setLayout(pnlClienteLayout);
-        pnlClienteLayout.setHorizontalGroup(
-            pnlClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1245, Short.MAX_VALUE)
-        );
-        pnlClienteLayout.setVerticalGroup(
-            pnlClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 655, Short.MAX_VALUE)
-        );
-
-        jtblcadastro.addTab("Cliente", pnlCliente);
-
-        pnlcategoria.setBackground(new java.awt.Color(255, 255, 255));
-
-        tblcategoria.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        tblcategoria.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "Código", "Descrição", "Situação"
-            }
-        ));
-        tblcategoria.setGridColor(new java.awt.Color(204, 204, 204));
-        tblcategoria.setIntercellSpacing(new java.awt.Dimension(0, 0));
-        tblcategoria.setRowHeight(35);
-        tblcategoria.setSelectionBackground(new java.awt.Color(204, 204, 204));
-        tblcategoria.setShowHorizontalLines(false);
-        tblcategoria.setShowVerticalLines(false);
-        tblcategoria.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(tblcategoria);
+        jScrollPane1.setViewportView(tbllivros);
 
         tfdbusca.setBackground(new java.awt.Color(242, 243, 245));
         tfdbusca.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
         tfdbusca.setForeground(new java.awt.Color(151, 156, 164));
-        tfdbusca.setText("Pesquisar por categorias");
+        tfdbusca.setText("Pesquisar por livros...");
         tfdbusca.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         tfdbusca.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -377,19 +330,19 @@ public class MenuGUI extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout pnlcategoriaLayout = new javax.swing.GroupLayout(pnlcategoria);
-        pnlcategoria.setLayout(pnlcategoriaLayout);
-        pnlcategoriaLayout.setHorizontalGroup(
-            pnlcategoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlcategoriaLayout.createSequentialGroup()
+        javax.swing.GroupLayout pnllivrosLayout = new javax.swing.GroupLayout(pnllivros);
+        pnllivros.setLayout(pnllivrosLayout);
+        pnllivrosLayout.setHorizontalGroup(
+            pnllivrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnllivrosLayout.createSequentialGroup()
                 .addGap(84, 84, 84)
-                .addGroup(pnlcategoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(pnllivrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1057, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlcategoriaLayout.createSequentialGroup()
+                    .addGroup(pnllivrosLayout.createSequentialGroup()
                         .addComponent(tfdbusca)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnpesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlcategoriaLayout.createSequentialGroup()
+                    .addGroup(pnllivrosLayout.createSequentialGroup()
                         .addComponent(btnupdate, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -399,17 +352,17 @@ public class MenuGUI extends javax.swing.JFrame {
                         .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(104, Short.MAX_VALUE))
         );
-        pnlcategoriaLayout.setVerticalGroup(
-            pnlcategoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlcategoriaLayout.createSequentialGroup()
+        pnllivrosLayout.setVerticalGroup(
+            pnllivrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnllivrosLayout.createSequentialGroup()
                 .addGap(114, 114, 114)
-                .addGroup(pnlcategoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(pnllivrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(tfdbusca, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnpesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(44, 44, 44)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(pnlcategoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnllivrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnupdate, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -417,7 +370,7 @@ public class MenuGUI extends javax.swing.JFrame {
                 .addContainerGap(52, Short.MAX_VALUE))
         );
 
-        jtblcadastro.addTab("Categoria", pnlcategoria);
+        jtblcadastro.addTab("Livros", pnllivros);
 
         javax.swing.GroupLayout pnlAutorLayout = new javax.swing.GroupLayout(pnlAutor);
         pnlAutor.setLayout(pnlAutorLayout);
@@ -551,63 +504,63 @@ public class MenuGUI extends javax.swing.JFrame {
         btnprodutos.setBackground(new Color (0,102,102));
     }//GEN-LAST:event_btnprodutosActionPerformed
 
-    private void btnpesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpesquisaActionPerformed
-       new CategoriaDAO().popularTabela(tblcategoria, tfdbusca.getText());
-    }//GEN-LAST:event_btnpesquisaActionPerformed
-
-    private void tfdbuscaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfdbuscaMouseClicked
-        tfdbusca.setText("");
-        tfdbusca.setForeground(Color.BLACK);
-    }//GEN-LAST:event_tfdbuscaMouseClicked
+    private void btnupdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnupdateActionPerformed
+        new LivroDAO().popularTabela(tbllivros,"");      
+    }//GEN-LAST:event_btnupdateActionPerformed
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         DlgCadastro tela = new DlgCadastro(null, true);
         tela.setVisible(true);
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
-    private void btnupdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnupdateActionPerformed
-        new CategoriaDAO().popularTabela(tblcategoria,"");
-    }//GEN-LAST:event_btnupdateActionPerformed
-
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-       
-        String idString = String.valueOf(tblcategoria.getValueAt(tblcategoria.getSelectedRow(), 0));      
-        int id = Integer.parseInt(idString);           
-        Categoria categoria = new CategoriaDAO().consultarId(id);
-        
-        DlgCadastro tela = new DlgCadastro(null, true, categoria);
+
+        String idString = String.valueOf(tbllivros.getValueAt(tbllivros.getSelectedRow(), 0));
+        int id = Integer.parseInt(idString);
+        Livro livro = new LivroDAO().consultarId(id);
+
+        DlgCadastro tela = new DlgCadastro(null, true, livro);
         tela.setVisible(true);
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         Object[] options = { "Inativar", "Excluir" };
         int opcao = JOptionPane.showOptionDialog(null, "Escolha a opção desejada/n", "Excluir", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-        
+
         System.out.println("Opção = " + opcao);
-         String idString = String.valueOf(tblcategoria.getValueAt(tblcategoria.getSelectedRow(), 0));
-         int id = Integer.parseInt(idString);
-         
-       if (opcao == 0){
-            
-            String retorno = new CategoriaDAO().inativar(id);
+        String idString = String.valueOf(tbllivros.getValueAt(tbllivros.getSelectedRow(), 0));
+        int id = Integer.parseInt(idString);
+
+        if (opcao == 0){
+
+            String retorno = new LivroDAO().inativar(id);
             if (retorno == null) {
                 JOptionPane.showMessageDialog(null, "Registro inativado com sucesso!");
-                new CategoriaDAO().popularTabela(tblcategoria, "");
+                new LivroDAO().popularTabela(tbllivros, "");
             } else {
                 JOptionPane.showMessageDialog(null, "Ops, problemas ao inativar registro.");
             }
         }
-        
+
         if (opcao == 1) {
-          String retorno = new CategoriaDAO().excluir(id);
+            String retorno = new LivroDAO().excluir(id);
             if (retorno == null) {
                 JOptionPane.showMessageDialog(null, "Registro excluído com sucesso!");
-                new CategoriaDAO().popularTabela(tblcategoria, "");
+                new LivroDAO().popularTabela(tbllivros, "");
             } else {
                 JOptionPane.showMessageDialog(null, "Ops, problemas ao excluir registro.");
-            }  
+            }
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnpesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpesquisaActionPerformed
+        new LivroDAO().popularTabela(tbllivros, tfdbusca.getText());
+    }//GEN-LAST:event_btnpesquisaActionPerformed
+
+    private void tfdbuscaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfdbuscaMouseClicked
+        tfdbusca.setText("");
+        tfdbusca.setForeground(Color.BLACK);
+    }//GEN-LAST:event_tfdbuscaMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -625,21 +578,18 @@ public class MenuGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollBar jScrollBar1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSlider jSlider1;
     private javax.swing.JTabbedPane jtblcadastro;
     private javax.swing.JLabel lblfuncionario;
     private javax.swing.JPanel pnlAutor;
     private javax.swing.JPanel pnlCliente;
     private javax.swing.JPanel pnlcadastro;
-    private javax.swing.JPanel pnlcategoria;
     private javax.swing.JPanel pnlfundo;
     private javax.swing.JPanel pnlhome;
-    private javax.swing.JPanel pnllivro;
+    private javax.swing.JPanel pnllivros;
     private javax.swing.JPanel pnlmenu;
     private javax.swing.JPanel pnlprodutos;
     private javax.swing.JPanel pnlvendas;
-    private javax.swing.JTable tblcategoria;
     private javax.swing.JTable tbllivros;
     private javax.swing.JTextField tfdbusca;
     // End of variables declaration//GEN-END:variables

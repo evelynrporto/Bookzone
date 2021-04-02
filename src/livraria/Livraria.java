@@ -5,7 +5,8 @@
  */
 package livraria;
 
-import tela.LoguinGUI;
+import javax.swing.UIManager;
+import tela.LoginGUI;
 import tela.MenuGUI;
 
 /**
@@ -18,7 +19,7 @@ public class Livraria {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new LoguinGUI().setVisible(true);
+        new LoginGUI().setVisible(true);
     }
     
 }
