@@ -45,7 +45,6 @@ public class LivroDAO implements IDAOT <Livro> {
             System.out.println("SQL: " + sql);
 
             int resultado = stm.executeUpdate(sql);
-
             return null;
         } catch (Exception e) {
             System.out.println("Erro ao salvar livro: " + e);
@@ -60,14 +59,14 @@ public class LivroDAO implements IDAOT <Livro> {
 
             String sql = "UPDATE livro "
                     + "SET titulo = '" + o.getTitulo() + "', "
-                    + "quantidade = " + o.getQuantidade() + " "
-                    + "valor_custo = " + o.getValor_custo() + " "
-                    + "valor_venda = " + o.getValor_venda() + " "
-                    + "idioma = '" + o.getIdioma() + "' "
-                    + "situacao = '" + o.getSituacao() + "' "
-                    + "estante_id = " + o.getEstante_id() + " "
-                    + "editora_id = " + o.getEditora_id() + " "
-                    + "categoria_id = " + o.getCategoria_id() + " "
+                    + "quantidade = " + o.getQuantidade() + " ,"
+                    + "valor_custo = " + o.getValor_custo() + " ,"
+                    + "valor_venda = " + o.getValor_venda() + " ,"
+                    + "idioma = '" + o.getIdioma() + "' ,"
+                    + "situacao = '" + o.getSituacao() + "' ,"
+                    + "estante_id = " + o.getEstante_id() + " ,"
+                    + "editora_id = " + o.getEditora_id() + " ,"
+                    + "categoria_id = " + o.getCategoria_id() + " ,"
                     + "autor_id = " + o.getAutor_id() + " "
                     + "WHERE id = " + o.getId();
 

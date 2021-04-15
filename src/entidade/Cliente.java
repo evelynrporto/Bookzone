@@ -1,17 +1,24 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package entidade;
+
 import java.util.Date;
-public class Funcionario {
-    
+
+/**
+ *
+ * @author evely
+ */
+public class Cliente {
     private int id;
     private String nome;
-    private String username;
-    private String senha;
     private String email;
     private String cpf;
     private String cidade;
-    private String telefone;
-    private char situacao;
+    private Date datanasc;
+    private String celular;
 
     public int getId() {
         return id;
@@ -27,22 +34,6 @@ public class Funcionario {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
     }
 
     public String getEmail() {
@@ -69,22 +60,20 @@ public class Funcionario {
         this.cidade = cidade;
     }
 
-    public String getTelefone() {
-        return telefone;
+    public Date getDatanasc() {
+        return datanasc;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public void setDatanasc(Date datanasc) {
+        this.datanasc = datanasc;
     }
 
-    public char getSituacao() {
-        return situacao;
+    public String getCelular() {
+        return celular;
     }
 
-    public void setSituacao(char situacao) {
-        this.situacao = situacao;
+    public void setCelular(String celular) {
+        this.celular = celular;
     }
+      
 }
-
-  
-

@@ -30,9 +30,10 @@ public class Livro {
         return titulo;
     }
 
-    public void setTitulo(String titulo) {
+    public void setTitulo(String titulo) {    
         this.titulo = titulo;
     }
+    
 
     public int getQuantidade() {
         return quantidade;

@@ -5,6 +5,7 @@
  */
 package tela;
 
+import apoio.Criptografar;
 import dao.FuncionarioDAO;
 import entidade.Funcionario;
 import java.awt.Toolkit;
@@ -137,10 +138,10 @@ public class LoginGUI extends javax.swing.JFrame {
         Funcionario funcionario = new Funcionario();
 
         String username = tfdusername.getText();
-        String senha = tfdsenha.getText();
+        String senha = Criptografar.encriptografar(tfdsenha.getText());
 
-        funcionario = dao.consultarUsername(username, senha);
-
+        funcionario = dao.consultarFuncionario(username, senha);
+        
         if (funcionario != null)
         {
             this.dispose();
