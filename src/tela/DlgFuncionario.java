@@ -8,6 +8,8 @@ package tela;
 import apoio.Criptografar;
 import dao.FuncionarioDAO;
 import entidade.Funcionario;
+import java.awt.Color;
+import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 
 /**
@@ -23,13 +25,16 @@ public class DlgFuncionario extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         lblerror.setVisible(false);
+        setIcon();
         
     }
     
     public DlgFuncionario(java.awt.Frame parent, boolean modal, Funcionario funcionario) {
         super(parent, modal);
-        initComponents();       
+        initComponents();   
+        
         lblerror.setVisible(false);
+        setIcon();
         
         tfdnome.setText(funcionario.getNome());
         tfdemail.setText(funcionario.getEmail());
@@ -46,12 +51,17 @@ public class DlgFuncionario extends javax.swing.JDialog {
         }
         this.funcionario = funcionario;
     }
+    
+    public void setIcon(){
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));   
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         pnlfuncionario = new javax.swing.JPanel();
+        lblaviso = new javax.swing.JLabel();
         lblerror = new javax.swing.JLabel();
         tfdnome = new javax.swing.JTextField();
         tfdemail = new javax.swing.JTextField();
@@ -65,8 +75,12 @@ public class DlgFuncionario extends javax.swing.JDialog {
         lblfundo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cadastro Funcionario");
 
         pnlfuncionario.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblaviso.setForeground(new java.awt.Color(255, 255, 255));
+        pnlfuncionario.add(lblaviso, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 540, -1, -1));
 
         lblerror.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         lblerror.setForeground(new java.awt.Color(255, 0, 0));
@@ -99,6 +113,11 @@ public class DlgFuncionario extends javax.swing.JDialog {
 
         tfdsenha.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         tfdsenha.setBorder(null);
+        tfdsenha.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfdsenhaKeyTyped(evt);
+            }
+        });
         pnlfuncionario.add(tfdsenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 503, 200, 30));
 
         tfdusuario.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -130,15 +149,16 @@ public class DlgFuncionario extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnregistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnregistrarMouseClicked
-        if (tfdnome.getText().isEmpty() || tfdcpf.getText().isEmpty()
-            || tfdfone.getText().isEmpty() || tfdcidade.getText().isEmpty() || tfdusuario.getText().isEmpty()
-            || tfdsenha.getText().length() > 3){
+        FuncionarioDAO funcDAO = new FuncionarioDAO();
+        String fone = removerMascara(tfdfone.getText());
+        String cpf = removerMascara (tfdcpf.getText());
+        if (tfdnome.getText().trim().isEmpty() || cpf.trim().isEmpty()
+            || fone.trim().isEmpty() || tfdcidade.getText().trim().isEmpty() || tfdusuario.getText().trim().isEmpty()
+            || tfdsenha.getText().trim().length() < 4){
             lblerror.setVisible(true);
         } else {
-            lblerror.setVisible(false);
-        }
 
-        FuncionarioDAO funcDAO = new FuncionarioDAO();
+
         id = funcionario.getId();
         funcionario.setNome(tfdnome.getText());
         funcionario.setEmail(tfdemail.getText());
@@ -147,7 +167,7 @@ public class DlgFuncionario extends javax.swing.JDialog {
         funcionario.setCidade(tfdcidade.getText());
         funcionario.setUsername(tfdusuario.getText());
         funcionario.setSenha(Criptografar.encriptografar(tfdsenha.getText()));
-
+        
         int idcsit = cmbsituacao.getSelectedIndex();
         if (idcsit == 0) {
             funcionario.setSituacao('a');
@@ -159,13 +179,14 @@ public class DlgFuncionario extends javax.swing.JDialog {
 
         if (id == 0) {
             retorno = funcDAO.salvar(funcionario);
+            this.dispose();
         } else {
             retorno = funcDAO.atualizar(funcionario);
+            this.dispose();
         }
 
         if (retorno == null) {
             JOptionPane.showMessageDialog(null, "Registro salvo com sucesso!");
-            lblerror.setVisible(false);
             id = 0;
 
         } else {
@@ -173,8 +194,25 @@ public class DlgFuncionario extends javax.swing.JDialog {
                 + "Mensagem técnica:\n"
                 + "Erro: " + retorno);
         }
+        }
     }//GEN-LAST:event_btnregistrarMouseClicked
 
+    private void tfdsenhaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdsenhaKeyTyped
+        if (tfdsenha.getText().trim().length() <= 3) {
+            lblaviso.setForeground(Color.red);
+            lblaviso.setText("Senha fraca");
+        } else if (tfdsenha.getText().trim().length() > 3 && tfdsenha.getText().trim().length() <= 5) {
+            lblaviso.setForeground(Color.ORANGE);
+            lblaviso.setText("Senha mediana");
+        } else if (tfdsenha.getText().trim().length() > 5) {
+            lblaviso.setText("Senha forte");
+            lblaviso.setForeground(Color.green);
+        }
+    }//GEN-LAST:event_tfdsenhaKeyTyped
+    
+    public String removerMascara (String str) {
+        return str.replaceAll("\\D", ""); 
+    }
     /**
      * @param args the command line arguments
      */
@@ -220,6 +258,7 @@ public class DlgFuncionario extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btnregistrar;
     private javax.swing.JComboBox<String> cmbsituacao;
+    private javax.swing.JLabel lblaviso;
     private javax.swing.JLabel lblerror;
     private javax.swing.JLabel lblfundo;
     private javax.swing.JPanel pnlfuncionario;

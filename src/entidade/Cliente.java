@@ -19,6 +19,7 @@ public class Cliente {
     private String cidade;
     private Date datanasc;
     private String celular;
+    private char situacao;
 
     public int getId() {
         return id;
@@ -74,6 +75,14 @@ public class Cliente {
 
     public void setCelular(String celular) {
         this.celular = celular;
+    }
+
+    public char getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(char situacao) {
+        this.situacao = situacao;
     }
       
 }

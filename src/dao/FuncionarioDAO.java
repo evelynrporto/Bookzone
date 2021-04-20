@@ -58,9 +58,9 @@ public class FuncionarioDAO implements IDAOT<Funcionario> {
 
             String sql = "UPDATE funcionario "
                     + "SET nome = '" + o.getNome() + "', "
-                    + "email = '" + o.getEmail() + "' ,"
-                    + "cpf = '" + o.getCpf() + "' ,"
-                    + "telefone = '" + o.getTelefone() + "' ,"
+                    + "email = '" + o.getEmail() + "', "
+                    + "cpf = '" + o.getCpf() + "', "
+                    + "telefone = '" + o.getTelefone() + "', "
                     + "cidade = '" + o.getCidade() + "' ,"
                     + "situacao = '" + o.getSituacao() + "' ,"
                     + "username = '" + o.getUsername() + "' ,"
@@ -158,7 +158,7 @@ public class FuncionarioDAO implements IDAOT<Funcionario> {
             }
 
         } catch (Exception e) {
-            System.out.println("Erro ao consultar livro: " + e);
+            System.out.println("Erro ao consultar funcionario: " + e);
         }
 
         return funcionario;
@@ -191,13 +191,14 @@ public class FuncionarioDAO implements IDAOT<Funcionario> {
                 funcionario.setSenha(retorno.getString("senha"));
             }
          } catch (Exception e) {
-            System.out.println("Erro ao consultr categoria: " + e);
+            System.out.println("Erro ao consultar funcionario: " + e);
         }
 
         return funcionario;
         
     }
-
+    
+  
     public void popularTabela(JTable tabela, String criterio) {
         // dados da tabela
         Object[][] dadosTabela = null;

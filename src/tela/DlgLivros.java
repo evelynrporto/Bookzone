@@ -9,6 +9,7 @@ import apoio.ComboItem;
 import apoio.CombosDAO;
 import dao.LivroDAO;
 import entidade.Livro;
+import java.awt.Toolkit;
 import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
 
@@ -25,6 +26,7 @@ public class DlgLivros extends javax.swing.JDialog {
     public DlgLivros(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setIcon();
         new CombosDAO().popularCombo("categoria", cmbcategoria);
         new CombosDAO().popularCombo("estante", cmbestante);
         new CombosDAO().popularCombo("editora", cmbeditora);
@@ -34,7 +36,9 @@ public class DlgLivros extends javax.swing.JDialog {
     
     public DlgLivros(java.awt.Frame parent, boolean modal, Livro livro) {
         super(parent, modal);
-        initComponents();       
+        initComponents();     
+        
+        setIcon();
         popularCombos(livro);
         lblerror.setVisible(false);
         
@@ -54,7 +58,10 @@ public class DlgLivros extends javax.swing.JDialog {
         this.livro = livro;
     }
     
+    public void setIcon(){
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
     
+    }
     
 
     /**
@@ -84,7 +91,7 @@ public class DlgLivros extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cadastro");
+        setTitle("Cadastro Livros");
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         pnllivros.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -119,7 +126,7 @@ public class DlgLivros extends javax.swing.JDialog {
         });
         pnllivros.add(lblregistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 580, 210, 60));
 
-        cmbsituacao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ativo", "Inativo", " " }));
+        cmbsituacao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ativo", "Inativo" }));
         pnllivros.add(cmbsituacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 480, 210, 30));
 
         cmbeditora.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -155,15 +162,15 @@ public class DlgLivros extends javax.swing.JDialog {
 
     private void lblregistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblregistrarMouseClicked
   
-        if (tfdtitulo.getText().isEmpty() || tfdcusto.getText().isEmpty() || tfdvenda.getText().isEmpty()
-                || cmbautor.getSelectedIndex() == 0 || cmbestante.getSelectedIndex() == 0 || cmbeditora.getSelectedIndex() == 0
-                || tfdqtd.getText().isEmpty() || cmbcategoria.getSelectedIndex() == 0){
-          lblerror.setVisible(true);
-        }
-        
-        LivroDAO livDAO = new LivroDAO();
         double custo = Double.parseDouble(tfdcusto.getText().replaceAll(",", "."));
         double venda = Double.parseDouble(tfdvenda.getText().replaceAll(",", "."));
+        if (tfdtitulo.getText().trim().isEmpty() || tfdcusto.getText().trim().isEmpty() || tfdvenda.getText().trim().isEmpty()
+                || cmbautor.getSelectedIndex() == 0 || cmbestante.getSelectedIndex() == 0 || cmbeditora.getSelectedIndex() == 0
+                || tfdqtd.getText().trim().isEmpty() || cmbcategoria.getSelectedIndex() == 0 || custo > venda) {
+          lblerror.setVisible(true);
+        } else {
+        
+        LivroDAO livDAO = new LivroDAO();
         id = livro.getId();
         livro.setTitulo(tfdtitulo.getText());
         livro.setQuantidade(Integer.parseInt(tfdqtd.getText()));
@@ -198,8 +205,10 @@ public class DlgLivros extends javax.swing.JDialog {
          
         if (id == 0) {
             retorno = livDAO.salvar(livro);
+            this.dispose();
         } else {
             retorno = livDAO.atualizar(livro);
+            this.dispose();
         }
 
         if (retorno == null) {
@@ -212,6 +221,7 @@ public class DlgLivros extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Problemas ao salvar registro!\n\n"
                 + "Mensagem técnica:\n"
                 + "Erro: " + retorno);
+        }
         }
     }//GEN-LAST:event_lblregistrarMouseClicked
      
