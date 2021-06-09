@@ -241,6 +241,41 @@ public class ClienteDAO implements IDAOT <Cliente> {
             }      
           }
         }
+    
+    public Cliente consultarCpf(String cpf) {
+        Cliente cliente = null;
+        
+        try {
+            Statement st = ConexaoBD.getInstance().getConnection().createStatement();
+
+            String sql = "SELECT * "
+                    + "FROM cliente "
+                    + "WHERE "
+                    + "cpf = '" + cpf + "'";
+
+            System.out.println("SQL: " + sql);
+
+            ResultSet retorno = st.executeQuery(sql);
+
+            if (retorno.next()) {
+                cliente = new Cliente();
+
+                cliente.setId(retorno.getInt("id"));
+                cliente.setNome(retorno.getString("nome"));
+                cliente.setEmail(retorno.getString("email"));
+                cliente.setCpf(retorno.getString("cpf"));
+                cliente.setCidade(retorno.getString("cidade"));
+                cliente.setDatanasc(retorno.getDate("datanasc"));
+                cliente.setCelular(retorno.getString("celular"));
+                cliente.setSituacao(retorno.getString("situacao").charAt(0));                
+            }
+
+        } catch (Exception e) {
+            System.out.println("Erro ao consultar cliente: " + e);
+        }
+
+        return cliente;
+    }
 }
     
 

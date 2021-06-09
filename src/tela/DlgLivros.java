@@ -106,12 +106,12 @@ public class DlgLivros extends javax.swing.JDialog {
 
         tfdvenda.setBorder(null);
         tfdvenda.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        tfdvenda.setText("jCurrencyField1");
+        tfdvenda.setText(",00");
         pnllivros.add(tfdvenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 320, 170, 30));
 
         tfdcusto.setBorder(null);
         tfdcusto.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        tfdcusto.setText("jCurrencyField1");
+        tfdcusto.setText(",00");
         pnllivros.add(tfdcusto, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 320, 180, 30));
         pnllivros.add(tfdqtd, new org.netbeans.lib.awtextra.AbsoluteConstraints(46, 547, 60, 30));
 
@@ -161,13 +161,15 @@ public class DlgLivros extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblregistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblregistrarMouseClicked
-  
+        
         double custo = Double.parseDouble(tfdcusto.getText().replaceAll(",", "."));
         double venda = Double.parseDouble(tfdvenda.getText().replaceAll(",", "."));
+        
         if (tfdtitulo.getText().trim().isEmpty() || tfdcusto.getText().trim().isEmpty() || tfdvenda.getText().trim().isEmpty()
                 || cmbautor.getSelectedIndex() == 0 || cmbestante.getSelectedIndex() == 0 || cmbeditora.getSelectedIndex() == 0
-                || tfdqtd.getText().trim().isEmpty() || cmbcategoria.getSelectedIndex() == 0 || custo > venda) {
+                || tfdqtd.getText().trim().isEmpty() || cmbcategoria.getSelectedIndex() == 0 || custo >= venda) {
           lblerror.setVisible(true);
+          JOptionPane.showMessageDialog(null, "Todos os campos devem ser preenchidos para continuar.");
         } else {
         
         LivroDAO livDAO = new LivroDAO();

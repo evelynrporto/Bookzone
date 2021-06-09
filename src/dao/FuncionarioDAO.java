@@ -64,7 +64,7 @@ public class FuncionarioDAO implements IDAOT<Funcionario> {
                     + "cidade = '" + o.getCidade() + "' ,"
                     + "situacao = '" + o.getSituacao() + "' ,"
                     + "username = '" + o.getUsername() + "' ,"
-                    + "senha = '" + o.getSenha() + "' "
+                    + "senha = '" +o.getSenha() +"' "
                     + "WHERE id = " + o.getId();
 
             System.out.println("SQL: " + sql);
@@ -175,8 +175,8 @@ public class FuncionarioDAO implements IDAOT<Funcionario> {
                     + "FROM funcionario "
                     + "WHERE "
                     + "username = '" + username + "'"
-                    + "AND senha = '" + senha + "'"
-                    + "AND situacao = 'a'";
+                    + " AND senha = '" + senha + "'"
+                    + " AND situacao = 'a'";
 
             System.out.println("SQL: " + sql);
 
@@ -187,15 +187,56 @@ public class FuncionarioDAO implements IDAOT<Funcionario> {
 
                 funcionario.setId(retorno.getInt("id"));
                 funcionario.setNome(retorno.getString("nome"));
-                funcionario.setSituacao(retorno.getString("situacao").charAt(0));
                 funcionario.setSenha(retorno.getString("senha"));
+                funcionario.setUsername(retorno.getString("username"));
+                funcionario.setEmail(retorno.getString("email"));
+                funcionario.setSituacao(retorno.getString("situacao").charAt(0));
+                funcionario.setTelefone(retorno.getString("telefone"));
+                funcionario.setCidade(retorno.getString("cidade"));
+                funcionario.setCpf(retorno.getString("cpf"));
             }
          } catch (Exception e) {
             System.out.println("Erro ao consultar funcionario: " + e);
+            funcionario = null;
         }
 
         return funcionario;
         
+    }
+    public Funcionario consultarCpf(String cpf) {
+        Funcionario funcionario = null;
+        
+        try {
+            Statement st = ConexaoBD.getInstance().getConnection().createStatement();
+
+            String sql = "SELECT * "
+                    + "FROM funcionario "
+                    + "WHERE "
+                    + "cpf = '" + cpf + "'";
+
+            System.out.println("SQL: " + sql);
+
+            ResultSet retorno = st.executeQuery(sql);
+
+            if (retorno.next()) {
+                funcionario = new Funcionario();
+
+                funcionario.setId(retorno.getInt("id"));
+                funcionario.setNome(retorno.getString("nome"));
+                funcionario.setUsername(retorno.getString("username"));
+                funcionario.setSenha(retorno.getString("senha"));
+                funcionario.setCpf(retorno.getString("cpf"));
+                funcionario.setTelefone(retorno.getString("telefone"));
+                funcionario.setCidade(retorno.getString("cidade"));
+                funcionario.setEmail(retorno.getString("email"));
+                funcionario.setSituacao(retorno.getString("situacao").charAt(0));                
+            }
+
+        } catch (Exception e) {
+            System.out.println("Erro ao consultar funcionário: " + e);
+        }
+
+        return funcionario;
     }
     
   

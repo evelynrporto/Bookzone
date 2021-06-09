@@ -132,8 +132,10 @@ public class DlgCliente extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnregistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnregistrarMouseClicked
-         ClienteDAO cliDAO = new ClienteDAO();
+        
+        ClienteDAO cliDAO = new ClienteDAO();
         String cpf = removerMascara (tfdcpf.getText());
+        
         if (tfdnome.getText().trim().isEmpty() || cpf.trim().isEmpty()
             || tfdcidade.getText().trim().isEmpty()) {
             lblerror.setVisible(true);

@@ -25,6 +25,9 @@ public class DlgFuncionario extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         lblerror.setVisible(false);
+        tfdsenha.setVisible(true);
+        lblsenha.setVisible(true);
+        lblsenha2.setVisible(true);
         setIcon();
         
     }
@@ -43,6 +46,9 @@ public class DlgFuncionario extends javax.swing.JDialog {
         tfdcidade.setText(funcionario.getCidade());
         tfdusuario.setText(funcionario.getUsername());
         tfdsenha.setText("");
+        tfdsenha.setVisible(false);
+        lblsenha.setVisible(false);
+        lblsenha2.setVisible(false);
         
         if (funcionario.getSituacao() == 'a') {
             cmbsituacao.setSelectedIndex(0);
@@ -61,6 +67,8 @@ public class DlgFuncionario extends javax.swing.JDialog {
     private void initComponents() {
 
         pnlfuncionario = new javax.swing.JPanel();
+        lblsenha2 = new javax.swing.JLabel();
+        lblsenha = new javax.swing.JLabel();
         lblaviso = new javax.swing.JLabel();
         lblerror = new javax.swing.JLabel();
         tfdnome = new javax.swing.JTextField();
@@ -78,6 +86,16 @@ public class DlgFuncionario extends javax.swing.JDialog {
         setTitle("Cadastro Funcionario");
 
         pnlfuncionario.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblsenha2.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
+        lblsenha2.setForeground(new java.awt.Color(255, 0, 0));
+        lblsenha2.setText("*");
+        pnlfuncionario.add(lblsenha2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 480, -1, -1));
+
+        lblsenha.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
+        lblsenha.setForeground(new java.awt.Color(255, 255, 255));
+        lblsenha.setText("Senha");
+        pnlfuncionario.add(lblsenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 481, -1, -1));
 
         lblaviso.setForeground(new java.awt.Color(255, 255, 255));
         pnlfuncionario.add(lblaviso, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 540, -1, -1));
@@ -108,7 +126,7 @@ public class DlgFuncionario extends javax.swing.JDialog {
         pnlfuncionario.add(btnregistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 580, 200, 60));
 
         cmbsituacao.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        cmbsituacao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ativo", "Inativo", " " }));
+        cmbsituacao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ativo", "Inativo" }));
         pnlfuncionario.add(cmbsituacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 414, 220, 30));
 
         tfdsenha.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -118,7 +136,7 @@ public class DlgFuncionario extends javax.swing.JDialog {
                 tfdsenhaKeyTyped(evt);
             }
         });
-        pnlfuncionario.add(tfdsenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 503, 200, 30));
+        pnlfuncionario.add(tfdsenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 503, 210, 30));
 
         tfdusuario.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         tfdusuario.setBorder(null);
@@ -130,7 +148,7 @@ public class DlgFuncionario extends javax.swing.JDialog {
         tfdcpf.setBorder(null);
         pnlfuncionario.add(tfdcpf, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 325, 210, 30));
 
-        lblfundo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/livraria/imagens/funcionariocadastro.png"))); // NOI18N
+        lblfundo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/livraria/imagens/cadastrofuncionario.png"))); // NOI18N
         pnlfuncionario.add(lblfundo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 530, 700));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -152,9 +170,9 @@ public class DlgFuncionario extends javax.swing.JDialog {
         FuncionarioDAO funcDAO = new FuncionarioDAO();
         String fone = removerMascara(tfdfone.getText());
         String cpf = removerMascara (tfdcpf.getText());
+        
         if (tfdnome.getText().trim().isEmpty() || cpf.trim().isEmpty()
-            || fone.trim().isEmpty() || tfdcidade.getText().trim().isEmpty() || tfdusuario.getText().trim().isEmpty()
-            || tfdsenha.getText().trim().length() < 4){
+            || fone.trim().isEmpty() || tfdcidade.getText().trim().isEmpty() || tfdusuario.getText().trim().isEmpty()){
             lblerror.setVisible(true);
         } else {
 
@@ -178,8 +196,12 @@ public class DlgFuncionario extends javax.swing.JDialog {
         String retorno = null;
 
         if (id == 0) {
+            if (tfdsenha.getText().trim().length() > 4) {
             retorno = funcDAO.salvar(funcionario);
-            this.dispose();
+            this.dispose(); 
+            } else {
+                lblerror.setVisible(true);
+            }
         } else {
             retorno = funcDAO.atualizar(funcionario);
             this.dispose();
@@ -261,6 +283,8 @@ public class DlgFuncionario extends javax.swing.JDialog {
     private javax.swing.JLabel lblaviso;
     private javax.swing.JLabel lblerror;
     private javax.swing.JLabel lblfundo;
+    private javax.swing.JLabel lblsenha;
+    private javax.swing.JLabel lblsenha2;
     private javax.swing.JPanel pnlfuncionario;
     private javax.swing.JTextField tfdcidade;
     private apoio.JCpfField tfdcpf;
