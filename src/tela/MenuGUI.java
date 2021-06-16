@@ -61,6 +61,8 @@ public class MenuGUI extends javax.swing.JFrame {
         configurarTblConsulta();
         configurarTblVendas();
         iniciarData();
+        funcionarioMes();
+        totalVendas();
         // configs dos paineis
         pnlhome.setVisible(true);
         pnlcadastro.setVisible(false);
@@ -74,7 +76,7 @@ public class MenuGUI extends javax.swing.JFrame {
         this.email = funcionario.getEmail();
         this.nome = funcionario.getNome();
         this.id = funcionario.getId();
-
+        totalVendasFuncionario();
         new LivroDAO().popularTabela(tblgeral, "");
 
     }
@@ -85,6 +87,7 @@ public class MenuGUI extends javax.swing.JFrame {
     private Funcionario funcionario;
     private DefaultTableModel tableModel;
     double total;
+    int codigoLivro;
     String formapagamento = "";
 
     public void iniciarData() {
@@ -186,19 +189,23 @@ public class MenuGUI extends javax.swing.JFrame {
         jldata = new javax.swing.JLabel();
         jlhora = new javax.swing.JLabel();
         pnlhome = new javax.swing.JPanel();
+        lblMinhasVendas = new javax.swing.JLabel();
+        lblTotalVendas = new javax.swing.JLabel();
+        tfdnomeFuncMes = new javax.swing.JLabel();
+        fundohome = new javax.swing.JLabel();
         pnlcadastro = new javax.swing.JPanel();
-        pnlcomtabelas = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblgeral = new javax.swing.JTable();
+        cmbescolher = new javax.swing.JComboBox<>();
         tfdbusca = new javax.swing.JTextField();
         btnpesquisa = new javax.swing.JButton();
-        btnExcluir = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
         btnAdicionar = new javax.swing.JButton();
-        btnupdate = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
         lblmensagem = new javax.swing.JLabel();
-        cmbescolher = new javax.swing.JComboBox<>();
         btnRelatorioCliente = new javax.swing.JButton();
+        btnupdate = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblgeral = new javax.swing.JTable();
+        jLabel7 = new javax.swing.JLabel();
         pnlConsulta = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblconsulta = new javax.swing.JTable();
@@ -217,7 +224,6 @@ public class MenuGUI extends javax.swing.JFrame {
         btnpesquisarconsulta = new javax.swing.JButton();
         btnPesquisarItens = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         pnlvendas = new javax.swing.JPanel();
         chkCartao = new javax.swing.JCheckBox();
         chkDinheiro = new javax.swing.JCheckBox();
@@ -226,7 +232,6 @@ public class MenuGUI extends javax.swing.JFrame {
         lblcpf = new javax.swing.JLabel();
         tfdCpf = new apoio.JCpfField();
         btnfinalizar = new javax.swing.JButton();
-        btncancelar = new javax.swing.JButton();
         tfdnome = new javax.swing.JTextField();
         btnBuscarCliente = new javax.swing.JButton();
         tfdTotal = new javax.swing.JLabel();
@@ -400,12 +405,129 @@ public class MenuGUI extends javax.swing.JFrame {
 
         pnlhome.setBackground(new java.awt.Color(255, 255, 255));
         pnlhome.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblMinhasVendas.setFont(new java.awt.Font("Poppins", 1, 48)); // NOI18N
+        lblMinhasVendas.setForeground(new java.awt.Color(255, 255, 255));
+        lblMinhasVendas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblMinhasVendas.setText("18");
+        lblMinhasVendas.setToolTipText("");
+        pnlhome.add(lblMinhasVendas, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 430, 140, 130));
+
+        lblTotalVendas.setFont(new java.awt.Font("Poppins", 1, 36)); // NOI18N
+        lblTotalVendas.setForeground(new java.awt.Color(255, 255, 255));
+        lblTotalVendas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTotalVendas.setText("18");
+        pnlhome.add(lblTotalVendas, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 410, 130, 70));
+
+        tfdnomeFuncMes.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
+        tfdnomeFuncMes.setForeground(new java.awt.Color(255, 255, 255));
+        tfdnomeFuncMes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pnlhome.add(tfdnomeFuncMes, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 570, 280, 40));
+
+        fundohome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/livraria/imagens/imageminicial.png"))); // NOI18N
+        pnlhome.add(fundohome, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
         jPanel1.add(pnlhome, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 70, 1250, 700));
 
         pnlcadastro.setBackground(new java.awt.Color(204, 204, 204));
+        pnlcadastro.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        pnlcomtabelas.setBackground(new java.awt.Color(255, 255, 255));
-        pnlcomtabelas.setToolTipText("");
+        cmbescolher.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        cmbescolher.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Livros", "Funcionário", "Cliente" }));
+        cmbescolher.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        cmbescolher.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbescolherActionPerformed(evt);
+            }
+        });
+        pnlcadastro.add(cmbescolher, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 120, 217, 31));
+
+        tfdbusca.setBackground(new java.awt.Color(229, 233, 233));
+        tfdbusca.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
+        tfdbusca.setForeground(new java.awt.Color(151, 156, 164));
+        tfdbusca.setText("Pesquisar...");
+        tfdbusca.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        tfdbusca.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tfdbuscaMouseClicked(evt);
+            }
+        });
+        pnlcadastro.add(tfdbusca, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 180, 990, 40));
+
+        btnpesquisa.setBackground(new java.awt.Color(18, 151, 160));
+        btnpesquisa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/livraria/imagens/pesquisa.png"))); // NOI18N
+        btnpesquisa.setToolTipText("Pesquisar");
+        btnpesquisa.setFocusPainted(false);
+        btnpesquisa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnpesquisaActionPerformed(evt);
+            }
+        });
+        pnlcadastro.add(btnpesquisa, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 180, 46, 40));
+
+        btnAdicionar.setBackground(new java.awt.Color(18, 151, 160));
+        btnAdicionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/livraria/imagens/add.png"))); // NOI18N
+        btnAdicionar.setToolTipText("Adicionar");
+        btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdicionarActionPerformed(evt);
+            }
+        });
+        pnlcadastro.add(btnAdicionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 620, 45, 40));
+
+        btnEditar.setBackground(new java.awt.Color(18, 151, 160));
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/livraria/imagens/edit.png"))); // NOI18N
+        btnEditar.setToolTipText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+        pnlcadastro.add(btnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1040, 620, 46, 40));
+
+        btnExcluir.setBackground(new java.awt.Color(18, 151, 160));
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/livraria/imagens/lixeira.png"))); // NOI18N
+        btnExcluir.setToolTipText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+        pnlcadastro.add(btnExcluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 620, 46, 40));
+
+        lblmensagem.setFont(new java.awt.Font("Poppins", 0, 13)); // NOI18N
+        lblmensagem.setForeground(new java.awt.Color(204, 0, 0));
+        lblmensagem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblmensagem.setText("Selecione um registro para editá-lo!");
+        pnlcadastro.add(lblmensagem, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 630, 277, 30));
+
+        btnRelatorioCliente.setBackground(new java.awt.Color(18, 151, 160));
+        btnRelatorioCliente.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        btnRelatorioCliente.setForeground(new java.awt.Color(255, 255, 255));
+        btnRelatorioCliente.setText("Gerar relatório");
+        btnRelatorioCliente.setBorder(null);
+        btnRelatorioCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRelatorioClienteActionPerformed(evt);
+            }
+        });
+        pnlcadastro.add(btnRelatorioCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 630, 116, 31));
+
+        btnupdate.setBackground(new java.awt.Color(18, 151, 160));
+        btnupdate.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        btnupdate.setForeground(new java.awt.Color(255, 255, 255));
+        btnupdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/livraria/imagens/refresh.png"))); // NOI18N
+        btnupdate.setText("Atualizar lista");
+        btnupdate.setToolTipText("");
+        btnupdate.setBorder(null);
+        btnupdate.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        btnupdate.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
+        btnupdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnupdateActionPerformed(evt);
+            }
+        });
+        pnlcadastro.add(btnupdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 630, 126, 31));
 
         tblgeral.setFont(new java.awt.Font("Poppins", 0, 13)); // NOI18N
         tblgeral.setModel(new javax.swing.table.DefaultTableModel(
@@ -427,158 +549,10 @@ public class MenuGUI extends javax.swing.JFrame {
         tblgeral.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblgeral);
 
-        tfdbusca.setBackground(new java.awt.Color(229, 233, 233));
-        tfdbusca.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
-        tfdbusca.setForeground(new java.awt.Color(151, 156, 164));
-        tfdbusca.setText("Pesquisar...");
-        tfdbusca.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        tfdbusca.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tfdbuscaMouseClicked(evt);
-            }
-        });
+        pnlcadastro.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 250, 1050, 350));
 
-        btnpesquisa.setBackground(new java.awt.Color(18, 151, 160));
-        btnpesquisa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/livraria/imagens/pesquisa.png"))); // NOI18N
-        btnpesquisa.setToolTipText("Pesquisar");
-        btnpesquisa.setFocusPainted(false);
-        btnpesquisa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnpesquisaActionPerformed(evt);
-            }
-        });
-
-        btnExcluir.setBackground(new java.awt.Color(18, 151, 160));
-        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/livraria/imagens/lixeira.png"))); // NOI18N
-        btnExcluir.setToolTipText("Excluir");
-        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExcluirActionPerformed(evt);
-            }
-        });
-
-        btnEditar.setBackground(new java.awt.Color(18, 151, 160));
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/livraria/imagens/edit.png"))); // NOI18N
-        btnEditar.setToolTipText("Editar");
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
-            }
-        });
-
-        btnAdicionar.setBackground(new java.awt.Color(18, 151, 160));
-        btnAdicionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/livraria/imagens/add.png"))); // NOI18N
-        btnAdicionar.setToolTipText("Adicionar");
-        btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAdicionarActionPerformed(evt);
-            }
-        });
-
-        btnupdate.setBackground(new java.awt.Color(18, 151, 160));
-        btnupdate.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        btnupdate.setForeground(new java.awt.Color(255, 255, 255));
-        btnupdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/livraria/imagens/refresh.png"))); // NOI18N
-        btnupdate.setText("Atualizar lista");
-        btnupdate.setToolTipText("");
-        btnupdate.setBorder(null);
-        btnupdate.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        btnupdate.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
-        btnupdate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnupdateActionPerformed(evt);
-            }
-        });
-
-        lblmensagem.setFont(new java.awt.Font("Poppins", 0, 13)); // NOI18N
-        lblmensagem.setForeground(new java.awt.Color(204, 0, 0));
-        lblmensagem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblmensagem.setText("Selecione um registro para editá-lo!");
-
-        cmbescolher.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        cmbescolher.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Livros", "Funcionário", "Cliente" }));
-        cmbescolher.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        cmbescolher.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbescolherActionPerformed(evt);
-            }
-        });
-
-        btnRelatorioCliente.setBackground(new java.awt.Color(18, 151, 160));
-        btnRelatorioCliente.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        btnRelatorioCliente.setForeground(new java.awt.Color(255, 255, 255));
-        btnRelatorioCliente.setText("Gerar relatório");
-        btnRelatorioCliente.setBorder(null);
-        btnRelatorioCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRelatorioClienteActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout pnlcomtabelasLayout = new javax.swing.GroupLayout(pnlcomtabelas);
-        pnlcomtabelas.setLayout(pnlcomtabelasLayout);
-        pnlcomtabelasLayout.setHorizontalGroup(
-            pnlcomtabelasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlcomtabelasLayout.createSequentialGroup()
-                .addGap(84, 84, 84)
-                .addGroup(pnlcomtabelasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1057, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlcomtabelasLayout.createSequentialGroup()
-                        .addComponent(tfdbusca)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnpesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlcomtabelasLayout.createSequentialGroup()
-                        .addComponent(btnupdate, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnRelatorioCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(37, 37, 37)
-                        .addComponent(lblmensagem, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(cmbescolher, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(104, Short.MAX_VALUE))
-        );
-        pnlcomtabelasLayout.setVerticalGroup(
-            pnlcomtabelasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlcomtabelasLayout.createSequentialGroup()
-                .addContainerGap(108, Short.MAX_VALUE)
-                .addComponent(cmbescolher, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(pnlcomtabelasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tfdbusca, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnpesquisa, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(34, 34, 34)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39)
-                .addGroup(pnlcomtabelasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlcomtabelasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(pnlcomtabelasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnupdate, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnRelatorioCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(lblmensagem))
-                    .addComponent(btnEditar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAdicionar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnExcluir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(43, 43, 43))
-        );
-
-        javax.swing.GroupLayout pnlcadastroLayout = new javax.swing.GroupLayout(pnlcadastro);
-        pnlcadastro.setLayout(pnlcadastroLayout);
-        pnlcadastroLayout.setHorizontalGroup(
-            pnlcadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlcadastroLayout.createSequentialGroup()
-                .addGap(0, 2, Short.MAX_VALUE)
-                .addComponent(pnlcomtabelas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 3, Short.MAX_VALUE))
-        );
-        pnlcadastroLayout.setVerticalGroup(
-            pnlcadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlcomtabelas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/livraria/imagens/gerarcadastros.png"))); // NOI18N
+        pnlcadastro.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         jPanel1.add(pnlcadastro, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 70, 1250, 700));
 
@@ -602,40 +576,46 @@ public class MenuGUI extends javax.swing.JFrame {
         tblconsulta.setShowVerticalLines(false);
         jScrollPane2.setViewportView(tblconsulta);
 
-        pnlConsulta.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, 960, 380));
+        pnlConsulta.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 270, 1150, 370));
 
-        lblDataIni.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        lblDataIni.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        lblDataIni.setForeground(new java.awt.Color(255, 255, 255));
         lblDataIni.setText("Data Final:");
-        pnlConsulta.add(lblDataIni, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 190, -1, -1));
+        pnlConsulta.add(lblDataIni, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 204, -1, -1));
 
-        lblDataIni1.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        lblDataIni1.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        lblDataIni1.setForeground(new java.awt.Color(255, 255, 255));
         lblDataIni1.setText("Data Inicial:");
-        pnlConsulta.add(lblDataIni1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 150, -1, -1));
+        pnlConsulta.add(lblDataIni1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 153, -1, -1));
 
-        lblCliente.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        lblCliente.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        lblCliente.setForeground(new java.awt.Color(255, 255, 255));
         lblCliente.setText("Cliente:");
-        pnlConsulta.add(lblCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 140, -1, -1));
-        pnlConsulta.add(tfdCpfCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 140, 170, 30));
+        pnlConsulta.add(lblCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 153, -1, -1));
+        pnlConsulta.add(tfdCpfCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 150, 170, 30));
 
-        lblFuncionario.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        lblFuncionario.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        lblFuncionario.setForeground(new java.awt.Color(255, 255, 255));
         lblFuncionario.setText("Funcionário:");
         lblFuncionario.setToolTipText("");
-        pnlConsulta.add(lblFuncionario, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 190, -1, -1));
-        pnlConsulta.add(tfdCpfFuncionario, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 190, 170, 30));
+        pnlConsulta.add(lblFuncionario, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 200, -1, -1));
+        pnlConsulta.add(tfdCpfFuncionario, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 200, 170, 30));
 
         try {
             tfdDataIni.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        pnlConsulta.add(tfdDataIni, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 140, 140, 30));
+        tfdDataIni.setFont(new java.awt.Font("Poppins", 0, 13)); // NOI18N
+        pnlConsulta.add(tfdDataIni, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 150, 160, 30));
 
         try {
             tfdDataFim.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        pnlConsulta.add(tfdDataFim, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 190, 140, 30));
+        tfdDataFim.setFont(new java.awt.Font("Poppins", 0, 13)); // NOI18N
+        pnlConsulta.add(tfdDataFim, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 200, 160, 30));
 
         btnBuscaCliente.setBackground(new java.awt.Color(23, 169, 168));
         btnBuscaCliente.setForeground(new java.awt.Color(23, 169, 168));
@@ -646,7 +626,7 @@ public class MenuGUI extends javax.swing.JFrame {
                 btnBuscaClienteActionPerformed(evt);
             }
         });
-        pnlConsulta.add(btnBuscaCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 139, 30, 30));
+        pnlConsulta.add(btnBuscaCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 150, 30, 30));
 
         btnBuscaFuncionario.setBackground(new java.awt.Color(23, 169, 168));
         btnBuscaFuncionario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/livraria/imagens/botaoverificar.png"))); // NOI18N
@@ -656,11 +636,11 @@ public class MenuGUI extends javax.swing.JFrame {
                 btnBuscaFuncionarioActionPerformed(evt);
             }
         });
-        pnlConsulta.add(btnBuscaFuncionario, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 190, 30, 30));
+        pnlConsulta.add(btnBuscaFuncionario, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 200, 30, 30));
 
         jLabel3.setForeground(new java.awt.Color(255, 0, 0));
         jLabel3.setText("*");
-        pnlConsulta.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 190, 10, 10));
+        pnlConsulta.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 210, 10, 10));
 
         jLabel4.setForeground(new java.awt.Color(255, 0, 0));
         jLabel4.setText("*");
@@ -677,7 +657,7 @@ public class MenuGUI extends javax.swing.JFrame {
                 btnpesquisarconsultaActionPerformed(evt);
             }
         });
-        pnlConsulta.add(btnpesquisarconsulta, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 631, 130, 30));
+        pnlConsulta.add(btnpesquisarconsulta, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 650, 130, 30));
 
         btnPesquisarItens.setBackground(new java.awt.Color(23, 169, 168));
         btnPesquisarItens.setFont(new java.awt.Font("Poppins", 1, 13)); // NOI18N
@@ -690,16 +670,11 @@ public class MenuGUI extends javax.swing.JFrame {
                 btnPesquisarItensActionPerformed(evt);
             }
         });
-        pnlConsulta.add(btnPesquisarItens, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 631, 130, 30));
+        pnlConsulta.add(btnPesquisarItens, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 650, 130, 30));
 
         jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel5.setText("______");
-        pnlConsulta.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, -1, -1));
-
-        jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 30)); // NOI18N
-        jLabel6.setText("Gerar Consultas");
-        jLabel6.setToolTipText("");
-        pnlConsulta.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, -1, -1));
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/livraria/imagens/gerarconsulta.png"))); // NOI18N
+        pnlConsulta.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         jPanel1.add(pnlConsulta, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 70, 1250, 700));
 
@@ -762,19 +737,7 @@ public class MenuGUI extends javax.swing.JFrame {
                 btnfinalizarActionPerformed(evt);
             }
         });
-        pnlvendas.add(btnfinalizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 630, 160, 40));
-
-        btncancelar.setBackground(new java.awt.Color(255, 0, 0));
-        btncancelar.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
-        btncancelar.setForeground(new java.awt.Color(255, 255, 255));
-        btncancelar.setText("Cancelar");
-        btncancelar.setBorder(null);
-        btncancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btncancelarActionPerformed(evt);
-            }
-        });
-        pnlvendas.add(btncancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 630, 150, 40));
+        pnlvendas.add(btnfinalizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 630, 310, 40));
 
         tfdnome.setEditable(false);
         tfdnome.setBackground(new java.awt.Color(230, 227, 227));
@@ -1016,6 +979,29 @@ public class MenuGUI extends javax.swing.JFrame {
         btnrelatorios.setBackground(new Color(0, 102, 102));
     }//GEN-LAST:event_btnrelatoriosActionPerformed
 
+    private void funcionarioMes() {
+    VendaDAO dao = new VendaDAO();
+    int idFM;
+    idFM = dao.obterFuncionarioMes();
+    FuncionarioDAO daoF = new FuncionarioDAO();
+    Funcionario funcionariom = daoF.consultarId(idFM);
+    tfdnomeFuncMes.setText(funcionariom.getNome());   
+}
+    
+    private void totalVendas () {
+      int total;
+      VendaDAO dao = new VendaDAO();
+      total = dao.obterUltima();
+      lblTotalVendas.setText(String.valueOf(total));
+    }
+    
+    private void totalVendasFuncionario() {
+     int total;
+     VendaDAO dao = new VendaDAO();
+     total = dao.obterNumeroVendas(id);
+     lblMinhasVendas.setText(String.valueOf(total));
+    }
+    
     private void btnupdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnupdateActionPerformed
         switch (cmbescolher.getSelectedIndex()) {
             case 0:
@@ -1254,7 +1240,7 @@ public class MenuGUI extends javax.swing.JFrame {
         
         if (tfdCodigo.getText().isEmpty() || tfdCodigo.getText().equals("0")) {
             JOptionPane.showMessageDialog(rootPane,
-                "Você precisa deve inserir o código do produto!",
+                "Você deve inserir o código do produto!",
                 "Atencão",
                 JOptionPane.ERROR_MESSAGE);
             
@@ -1265,7 +1251,26 @@ public class MenuGUI extends javax.swing.JFrame {
                 JOptionPane.ERROR_MESSAGE);
             
         } else {
+                   
             //-----------------------------------------------------------------------------------//
+            int qtd;
+            int retirado;
+            int total;
+            int verificar;
+            LivroDAO daoL = new LivroDAO();
+            Livro livro = new Livro();
+            livro = daoL.consultarId(Integer.parseInt(tfdCodigo.getText()));
+            verificar = livro.getQuantidade();
+            
+            if (verificar < quantidade) {
+              JOptionPane.showMessageDialog(rootPane,
+                "A quantidade não está disponível em estoque!",
+                "Atencão",
+                JOptionPane.ERROR_MESSAGE);  
+              
+            } else {
+            
+            
             ItemVendaDAO dao = new ItemVendaDAO();
             ItemVenda item = new ItemVenda();
             item.setIdProduto(Integer.parseInt(tfdCodigo.getText()));
@@ -1275,11 +1280,20 @@ public class MenuGUI extends javax.swing.JFrame {
             item.setSubtotal(Double.parseDouble(tfdValorTotal.getText().replaceAll(",", ".")));
             item.setValor_item(Double.parseDouble(tfdValorUnitario.getText().replaceAll(",", ".")));
             dao.salvar(item);
+            
             int ultimaVenda = atualizaIndiceVenda();
             dao.popularTabela(tabelaVenda, ultimaVenda);
-
+            
+            retirado = quantidade;
+            qtd = livro.getQuantidade();
+            total = qtd - retirado;
+            livro.setQuantidade(total);
+            daoL.atualizar(livro);
+            codigoLivro = Integer.parseInt(tfdCodigo.getText());
+            
             atualizaSubtotal();
 
+        }
         }
         tfdProduto.setText("");
         tfdValorUnitario.setText("0");
@@ -1290,15 +1304,30 @@ public class MenuGUI extends javax.swing.JFrame {
 
     private void btndescartarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndescartarActionPerformed
         if (tabelaVenda.getSelectedRow() != -1) {
+            
+            LivroDAO daoL = new LivroDAO();
+            Livro livro = new Livro();
+            
             int row = tabelaVenda.getSelectedRow();
             int column = 0;
             String value = tabelaVenda.getModel().getValueAt(row, column).toString();
+            String qtdString = tabelaVenda.getModel().getValueAt(row, 3).toString();
+            int retirado = Integer.parseInt(qtdString);
             int codigo = Integer.parseInt(value);
+            
             DefaultTableModel dtmProdutos = (DefaultTableModel) tabelaVenda.getModel();
             dtmProdutos.removeRow(tabelaVenda.getSelectedRow());
             ItemVendaDAO dao = new ItemVendaDAO();
             dao.excluir(codigo);
-
+            
+            int total;
+            int quantidade;
+            livro = daoL.consultarId(codigoLivro);
+            quantidade = livro.getQuantidade();
+            total = quantidade + retirado;
+            livro.setQuantidade(total);
+            daoL.atualizar(livro);
+                       
             atualizaSubtotal();
             // double valor = Double.parseDouble(preco);
             //total -= valor;
@@ -1321,7 +1350,7 @@ public class MenuGUI extends javax.swing.JFrame {
     public int atualizaIndiceVenda() {
        
         int idvenda;
-        VendaController venda = new VendaController();
+        VendaDAO venda = new VendaDAO();
         int ultimaVenda = venda.obterUltima();
         
         System.out.println(ultimaVenda);
@@ -1365,13 +1394,15 @@ public class MenuGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarClienteActionPerformed
 
     private void btnfinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnfinalizarActionPerformed
-        ClienteDAO clidao = new ClienteDAO();
-        Cliente cliente = new Cliente();
-        cliente = clidao.consultarCpf(tfdCpf.getText());
-        Double valorPagar = Double.parseDouble(tfdPagar.getText().replaceAll(",", "."));
-        Double totalc = Double.parseDouble(tfdTotal.getText().replaceAll(",", "."));
+        int cont = tabelaVenda.getRowCount();
+        System.out.println("contagem: "+ cont);
         
-        if (!chkDinheiro.isSelected() && !chkCartao.isSelected()) {
+        if (cont <= 0) {
+         JOptionPane.showMessageDialog(rootPane,
+                "Você deve adicionar itens para venda!",
+                "Atencão",
+                JOptionPane.ERROR_MESSAGE);   
+        } else if (!chkDinheiro.isSelected() && !chkCartao.isSelected()) { 
             JOptionPane.showMessageDialog(rootPane,
                 "Você precisa selecionar uma forma de pagamento!",
                 "Atencão",
@@ -1386,12 +1417,18 @@ public class MenuGUI extends javax.swing.JFrame {
                 "O cpf do cliente deve ser informado!",
                 "Atencão",
                 JOptionPane.ERROR_MESSAGE);
-        } else if (valorPagar < totalc) {
-            JOptionPane.showMessageDialog(rootPane,
-                "O valor a ser pago está incorreto!",
+        } else {
+            ClienteDAO clidao = new ClienteDAO();
+            Cliente cliente = new Cliente();
+            cliente = clidao.consultarCpf(tfdCpf.getText());
+            Double valorPagar = Double.parseDouble(tfdPagar.getText().replaceAll(",", "."));
+            Double totalc = Double.parseDouble(tfdTotal.getText().replaceAll(",", "."));
+            if (valorPagar < totalc) {
+                JOptionPane.showMessageDialog(rootPane,
+               "O valor a ser pago está incorreto!",
                 "Atencão",
                 JOptionPane.ERROR_MESSAGE);
-        } else {
+            } else {
             tfdnome.setVisible(true);
             tfdnome.setText(cliente.getNome());
             
@@ -1432,12 +1469,9 @@ public class MenuGUI extends javax.swing.JFrame {
         chkCartao.setSelected(false);
         atualizaIndiceVenda();
         }
+        }
         
     }//GEN-LAST:event_btnfinalizarActionPerformed
-
-    private void btncancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelarActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_btncancelarActionPerformed
 
     private void btnLivrosEstantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLivrosEstantesActionPerformed
         DlgRelatorioEstantes tela = new DlgRelatorioEstantes(null, true);
@@ -1565,8 +1599,8 @@ public class MenuGUI extends javax.swing.JFrame {
             funcionario = tfdCpfFuncionario.getText();
         } else {
             funcionario = "";
-        }        
-        new VendaDAO().popularTabela(tblconsulta, dataIni, dataFim, cliente, funcionario);
+        }
+        new VendaDAO().popularTabela(tblconsulta, dataIni, dataFim, cliente, funcionario);                 
         }
     }//GEN-LAST:event_btnpesquisarconsultaActionPerformed
 
@@ -1656,7 +1690,6 @@ public class MenuGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnadicionar;
     private javax.swing.JButton btnbuscacodigo;
     private javax.swing.JButton btncadastro;
-    private javax.swing.JButton btncancelar;
     private javax.swing.JButton btnconsulta;
     private javax.swing.JButton btndescartar;
     private javax.swing.JButton btndesconto;
@@ -1672,12 +1705,13 @@ public class MenuGUI extends javax.swing.JFrame {
     private javax.swing.JCheckBox chkDinheiro;
     private javax.swing.JComboBox<String> cmbescolher;
     private javax.swing.JLabel fundo;
+    private javax.swing.JLabel fundohome;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -1689,7 +1723,9 @@ public class MenuGUI extends javax.swing.JFrame {
     private javax.swing.JLabel lblDataIni1;
     private javax.swing.JLabel lblFuncionario;
     private javax.swing.JLabel lblIdVenda;
+    private javax.swing.JLabel lblMinhasVendas;
     private javax.swing.JLabel lblPagar;
+    private javax.swing.JLabel lblTotalVendas;
     private javax.swing.JLabel lblcpf;
     private javax.swing.JLabel lblfuncionario;
     private javax.swing.JLabel lblfundo;
@@ -1697,7 +1733,6 @@ public class MenuGUI extends javax.swing.JFrame {
     private javax.swing.JLabel logo;
     private javax.swing.JPanel pnlConsulta;
     private javax.swing.JPanel pnlcadastro;
-    private javax.swing.JPanel pnlcomtabelas;
     private javax.swing.JPanel pnlfundo;
     private javax.swing.JPanel pnlhome;
     private javax.swing.JPanel pnlmenu;
@@ -1721,6 +1756,7 @@ public class MenuGUI extends javax.swing.JFrame {
     private apoio.JCurrencyField tfdValorUnitario;
     private javax.swing.JTextField tfdbusca;
     private javax.swing.JTextField tfdnome;
+    private javax.swing.JLabel tfdnomeFuncMes;
     // End of variables declaration//GEN-END:variables
 class hora implements ActionListener {
 

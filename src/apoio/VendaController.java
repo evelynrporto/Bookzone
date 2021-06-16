@@ -23,7 +23,7 @@ public class VendaController {
         {
             //tenta obter o venda procurado
             //venda = VendaMock.obterUltima();
-            idvenda = VendaDAO.obterUltima();
+            
         } 
         catch (Exception e) 
         {

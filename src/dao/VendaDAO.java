@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JTable;
@@ -82,7 +83,7 @@ public class VendaDAO implements IDAOT <Venda> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    public static int obterUltima() {
+    public int obterUltima() {
         
         int ultimaVenda = 0;
         
@@ -193,12 +194,13 @@ public class VendaDAO implements IDAOT <Venda> {
         }
 
         int lin = 0;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         // efetua consulta na tabela
         try {
             resultadoQ = ConexaoBD.getInstance().getConnection().createStatement().executeQuery(""
                     
-                   +"SELECT v.id as id, v.data_venda as data, v.valor_pagamento as valor, v.forma_pagamento as forma, f.nome as funcionario, c.nome as cliente "
+                   +"SELECT v.id as id, to_char (v.data_venda, 'DD/MM/YYYY') as data, v.valor_pagamento as valor, v.forma_pagamento as forma, f.nome as funcionario, c.nome as cliente "
                    + "FROM vendas v, funcionario f, cliente c "
                    + "WHERE v.data_venda BETWEEN '"+dataIni+"' AND '"+dataFim+"' AND f.cpf ILIKE '%" +cpfFunc+ "%' and c.cpf ILIKE '%" +cpfCli+ "%' "
                    + "AND c.id = v.cliente_id AND f.id = v.funcionario_id");
@@ -211,7 +213,7 @@ public class VendaDAO implements IDAOT <Venda> {
                 dadosTabela[lin][3] = resultadoQ.getString("forma");
                 dadosTabela[lin][4] = resultadoQ.getString("funcionario");
                 dadosTabela[lin][5] = resultadoQ.getString("cliente");
-                                 
+                
                 lin++;                
             }
         } catch (Exception e) {
@@ -241,8 +243,61 @@ public class VendaDAO implements IDAOT <Venda> {
                     column.setMaxWidth(80);
                     column.setMinWidth(25);
                     break;
-            }      
+                case 1:
+                    
+            }
           }
         }
+     
+     public int obterFuncionarioMes() {
+        
+        int id = 0;
+                
+         try {
+            Statement st = ConexaoBD.getInstance().getConnection().createStatement();
+
+            String sql = "SELECT funcionario_id FROM vendas LIMIT 1";
+
+            System.out.println("SQL: " + sql);
+
+            ResultSet retorno = st.executeQuery(sql);
+
+            if (retorno.next()) {
+                
+               id = retorno.getInt("funcionario_id");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Erro ao consultar funcionario: " + e);
+        }
+
+        return id;
+        
+    }
+     public int obterNumeroVendas(int id) {
+        
+        int num = 0;
+                
+         try {
+            Statement st = ConexaoBD.getInstance().getConnection().createStatement();
+
+            String sql = "SELECT count (*) FROM vendas WHERE funcionario_id = "+id;
+
+            System.out.println("SQL: " + sql);
+
+            ResultSet retorno = st.executeQuery(sql);
+
+            if (retorno.next()) {
+                
+               num = retorno.getInt("count");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Erro ao consultar funcionario: " + e);
+        }
+
+        return num;
+        
+    }
     
 }

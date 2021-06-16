@@ -103,7 +103,7 @@ public class DlgAlterarSenha extends javax.swing.JDialog {
         fndsenha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/livraria/imagens/alteraçãodesenha.png"))); // NOI18N
         fndsenha.setText("X");
         fndsenha.setToolTipText("");
-        getContentPane().add(fndsenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        getContentPane().add(fndsenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 450, -1));
 
         pack();
         setLocationRelativeTo(null);
